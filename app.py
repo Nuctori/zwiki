@@ -4,17 +4,17 @@ import json
 from functools import wraps
 from flask import (Flask, render_template, flash, redirect, url_for, request)
 from werkzeug.utils import secure_filename
-from flask.ext.login import (LoginManager, login_required, current_user, login_user, logout_user)
-from flask.ext.script import Manager
+from flask_login import (LoginManager, login_required, current_user, login_user, logout_user)
+from flask_script import Manager
 
 from model import Wiki, UserManager
 from form import URLForm, SearchForm, EditorForm, LoginForm, AddLnkForm, Processors
 from utils import make_salted_hash, check_hashed_password, allowed_file, get_save_name, get_md5, save_uploadfile_to_backup
 
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#import sys
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 
 def get_default_authentication_method():
@@ -48,7 +48,8 @@ elif os.path.exists("content/config.py"):
 else:
     print ("Startup Failure: You need to place a "
            "config.py or user_config.py in your content directory.")
-    exit(1)
+    config_filename = "/home/hequ/Desktop/wiki/content/config.py"
+    #exit(1)
 
 app.config['CONTENT_DIR'] = 'content'
 app.config['TITLE'] = 'wiki'
@@ -297,4 +298,5 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    manager.run()
+    app.run(debug=True)
+    #manager.run()

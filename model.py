@@ -33,7 +33,7 @@ class Processors(object):
         return self.wikilink(html)
 
     def out(self):
-        md = markdown.Markdown(['codehilite', 'fenced_code', 'meta', 'tables'])
+        md = markdown.Markdown(extensions=['codehilite', 'fenced_code', 'meta', 'tables'])
         html = md.convert(self.content)
         phtml = self.post(html)
         body = self.content.split('\n\n', 1)[1]
@@ -52,7 +52,7 @@ class Page(object):
 
     def load(self):
         with open(self.path, 'rU') as f:
-            self.content = f.read().decode('utf-8')
+            self.content = f.read()
 
     def render(self):
         processed = Processors(self.content)
@@ -65,9 +65,12 @@ class Page(object):
         with open(self.path, 'w') as f:
             for key, value in self._meta.items():
                 line = u'%s: %s\n' % (key, value)
-                f.write(line.encode('utf-8'))
-            f.write('\n'.encode('utf-8'))
-            f.write(self.body.replace('\r\n', '\n').encode('utf-8'))
+                f.write(line)
+                #f.write(line.encode('utf-8'))
+            f.write('\n')
+            #f.write('\n'.encode('utf-8'))
+            f.write(self.body.replace('\r\n', '\n'))
+            #f.write(self.body.replace('\r\n', '\n').encode('utf-8'))
         if update:
             self.load()
             self.render()
